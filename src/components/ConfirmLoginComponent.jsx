@@ -40,12 +40,11 @@ export default function ConfirmLoginComponent() {
         const token = response.data.token;
         localStorage.setItem("user", userData._id);
         localStorage.setItem("token", `Bearer ${token}`);
-
-        // navigate("/", { replace: true });
+        navigate("/", { replace: true });
       })
       .catch((error) => {
         if (error.response) {
-          console.log(errors);
+          console.log(error);
         }
       });
   };
