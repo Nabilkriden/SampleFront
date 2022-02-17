@@ -23,12 +23,7 @@ import Button from "@mui/material/Button";
 
 function Copyright(props) {
   return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
+    <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
         Your Website
@@ -99,7 +94,7 @@ function DashboardContent() {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     localStorage.removeItem("email");
-    navigate("/login", { replace: true });
+    navigate("/", { replace: true });
   };
   return (
     <ThemeProvider theme={mdTheme}>
@@ -123,13 +118,7 @@ function DashboardContent() {
             >
               <MenuIcon />
             </IconButton>
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-              sx={{ flexGrow: 1 }}
-            >
+            <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
               Dashboard
             </Typography>
 
@@ -171,9 +160,7 @@ function DashboardContent() {
           component="main"
           sx={{
             backgroundColor: (theme) =>
-              theme.palette.mode === "light"
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
+              theme.palette.mode === "light" ? theme.palette.grey[100] : theme.palette.grey[900],
             flexGrow: 1,
             height: "100vh",
             overflow: "auto",
@@ -206,9 +193,7 @@ function DashboardContent() {
               </Grid>
               {/* Recent Orders */}
               <Grid item xs={12}>
-                <Paper
-                  sx={{ p: 2, display: "flex", flexDirection: "column" }}
-                ></Paper>
+                <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}></Paper>
               </Grid>
             </Grid>
             <Copyright sx={{ pt: 4 }} />

@@ -40,7 +40,7 @@ export default function ConfirmLoginComponent() {
         const token = response.data.token;
         localStorage.setItem("user", userData._id);
         localStorage.setItem("token", `Bearer ${token}`);
-        navigate("/", { replace: true });
+        navigate("/dashboard", { replace: true });
       })
       .catch((error) => {
         if (error.response) {
@@ -78,13 +78,7 @@ export default function ConfirmLoginComponent() {
             onChange={(e) => setCode(e.target.value)}
           />
           <div className="numberCircle">{conteur}</div>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            onClick={handleSubmit}
-          >
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} onClick={handleSubmit}>
             Login
           </Button>
         </Box>
