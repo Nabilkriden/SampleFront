@@ -4,7 +4,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
 import ConfirmLoginComponent from "../components/ConfirmLoginComponent";
 import LoginComponent from "../components/LoginComponent";
-import { publicRequest } from "../Dependencies/axios";
+import { login } from "../service/service";
 
 const theme = createTheme();
 
@@ -22,19 +22,14 @@ export default function LogInSide() {
       email: email,
       password: password,
     };
-    await publicRequest
-      .post("login", userData)
-      .then((response) => {
-        setIsLoged(!isloged);
-      })
+    login(userData)
+      .then(() => setIsLoged(!isloged))
       .catch((error) => {
         if (error.response) {
           setErrors(error.response.data);
-        } else if (error.request) {
-          setErrors(error.request);
-        } else {
-          setErrors("Error", error.message);
+          return;
         }
+        error.request ? setErrors(error.request) : setErrors("Error", error.message);
       });
   };
 
@@ -50,10 +45,7 @@ export default function LogInSide() {
           sx={{
             backgroundImage: "url(https://source.unsplash.com/random)",
             backgroundRepeat: "no-repeat",
-            backgroundColor: (t) =>
-              t.palette.mode === "light"
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
+            backgroundColor: (t) => (t.palette.mode === "light" ? t.palette.grey[50] : t.palette.grey[900]),
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
@@ -61,7 +53,7 @@ export default function LogInSide() {
         {isloged ? (
           <LoginComponent handleSubmit={handleSubmit} errors={errors} />
         ) : (
-          <ConfirmLoginComponent />
+          <ConfirmLoginComponent setIsLoged={setIsLoged} />
         )}
       </Grid>
     </ThemeProvider>

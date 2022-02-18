@@ -91,10 +91,8 @@ function DashboardContent() {
 
   const handleLogOut = (e) => {
     e.preventDefault();
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    localStorage.removeItem("email");
-    navigate("/", { replace: true });
+    localStorage.clear();
+    navigate("/login", { replace: true });
   };
   return (
     <ThemeProvider theme={mdTheme}>

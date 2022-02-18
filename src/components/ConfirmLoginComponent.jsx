@@ -8,10 +8,10 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import "./confirmLoginComponent.css";
-import { publicRequest } from "../Dependencies/axios";
 import { useNavigate } from "react-router-dom";
+import { confirmCode } from "../service/service";
 
-export default function ConfirmLoginComponent() {
+export default function ConfirmLoginComponent({ setIsLoged }) {
   let navigate = useNavigate();
 
   const [conteur, setConteur] = useState(60);
@@ -25,6 +25,7 @@ export default function ConfirmLoginComponent() {
         clearTimeout(timeOunt);
       };
     }
+    setIsLoged(true);
   }, [conteur]);
   const [code, setCode] = useState("");
   const handleSubmit = async (event) => {
@@ -33,20 +34,9 @@ export default function ConfirmLoginComponent() {
       code: code,
       email: localStorage.getItem("email"),
     };
-    await publicRequest
-      .post("login/verif", userData)
-      .then((response) => {
-        const userData = response.data.user;
-        const token = response.data.token;
-        localStorage.setItem("user", userData._id);
-        localStorage.setItem("token", `Bearer ${token}`);
-        navigate("/dashboard", { replace: true });
-      })
-      .catch((error) => {
-        if (error.response) {
-          console.log(error);
-        }
-      });
+    confirmCode(userData)
+      .then(() => navigate("/", { replace: true }))
+      .catch((error) => console.log(error));
   };
 
   return (
