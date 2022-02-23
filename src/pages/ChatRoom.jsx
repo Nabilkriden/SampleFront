@@ -42,12 +42,12 @@ const ChatComponet = () => {
 
   useEffect(() => {
     socket.current = io(ENDPOINT);
-
+    open && setShowFrends(false);
     fetchConversation();
     return () => {
       socket.current.disconnect();
     };
-  }, [ENDPOINT]);
+  }, [ENDPOINT, open]);
 
   useEffect(() => {
     if (curentUser) {
@@ -274,7 +274,7 @@ const ChatComponet = () => {
                   {currentChat ? (
                     message.map((v, i) => (
                       <div ref={scrollRef} key={i}>
-                        <Messages me={v.sender === curentUser._id} message={v} />
+                        <Messages me={v.senderId === curentUser._id} message={v} />
                       </div>
                     ))
                   ) : (
