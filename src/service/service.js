@@ -86,12 +86,12 @@ export const sendMessages = (msg, roomId) => {
   });
 };
 
-export const newRoom = (subAdminEmail, romName) => {
+export const newRoom = (subAdminEmail, roomName) => {
   return new Promise((resolve, reject) => {
     axiosReq
       .post(`/api/room`, {
         subAdminEmail: subAdminEmail,
-        romName: romName,
+        roomName: roomName,
       })
       .then((data) => {
         resolve(data.data);

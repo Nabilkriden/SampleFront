@@ -58,12 +58,12 @@ const ChatComponet = () => {
       socket.current?.on("getMessage", (msg) => {
         setMessage([...message, msg]);
       });
-      socket.current?.on("getRome", (rome) => {
-        setConversation([...conversation, rome]);
+      socket.current?.on("getRoom", (room) => {
+        setConversation([...conversation, room]);
       });
-      socket.current?.on("romeDeleted", (rome) => {
+      socket.current?.on("roomDeleted", (room) => {
         fetchConversation();
-        if (rome._id === currentChat?._id) {
+        if (room._id === currentChat?._id) {
           setCurrentChat(null);
           setMessage([]);
         }
@@ -118,13 +118,13 @@ const ChatComponet = () => {
         .catch((error) => snackBar("error !", "error"));
   };
 
-  const creatChatRomm = (subAdminEmail, romName) => {
-    newRoom(subAdminEmail, romName)
-      .then((rome) => {
-        setConversation([...conversation, rome]);
-        setCurrentChat(rome);
+  const creatChatRomm = (subAdminEmail, roomName) => {
+    newRoom(subAdminEmail, roomName)
+      .then((room) => {
+        setConversation([...conversation, room]);
+        setCurrentChat(room);
         setOpenModal(false);
-        socket.current.emit("newRome", rome);
+        socket.current.emit("newRome", room);
         snackBar("Room Created !", "success");
       })
       .catch((error) => {
@@ -151,7 +151,7 @@ const ChatComponet = () => {
     const reciverId = [];
     if (currentChat.adminRome !== curentUser._id) reciverId.push(currentChat.adminRome);
     if (currentChat.subAdmin !== curentUser._id) reciverId.push(currentChat.subAdmin);
-    currentChat.assistent.forEach((element) => {
+    currentChat.assistent?.forEach((element) => {
       element !== curentUser._id && reciverId.push(element);
     });
     deleteRoom(v._id)
@@ -246,6 +246,21 @@ const ChatComponet = () => {
         )}
       </Toolbar>
       <div className='chat-box-body'>
+        {open && (
+          <div className='chatOnline'>
+            User Online
+            <div className='chatOnlineWrapper'>
+              {usersOnline.map(
+                (user, index) =>
+                  user.userData._id !== curentUser._id && (
+                    <div key={index} onClick={() => creatChatRomm(user.userData._id)}>
+                      <ChatOnline user={user.userData} />
+                    </div>
+                  ),
+              )}
+            </div>
+          </div>
+        )}
         <TabContext value={value}>
           <TabPanel value='1' id='chatPannel2' className='chatMenu'>
             <ChatButton table={roomActionButton} />
@@ -304,21 +319,6 @@ const ChatComponet = () => {
             </div>
           </TabPanel>
         </TabContext>
-        {open && (
-          <div className='chatOnline'>
-            User Online
-            <div className='chatOnlineWrapper'>
-              {usersOnline.map(
-                (user, index) =>
-                  user.userData._id !== curentUser._id && (
-                    <div key={index} onClick={() => creatChatRomm(user.userData._id)}>
-                      <ChatOnline user={user.userData} />
-                    </div>
-                  ),
-              )}
-            </div>
-          </div>
-        )}
       </div>
       {openModal && <AddRoomModal close={handleCloseModal} creatChatRomm={creatChatRomm} />}
       {openAssitentModal && (

@@ -13,7 +13,7 @@ export default function AddRoomModal({ close, creatChatRomm }) {
     setData({ ...data, [e.target.name]: e.target.value });
   };
   const addRoom = () => {
-    if (data?.email && data?.room) creatChatRomm(data.email, data.room);
+    if (data?.room) creatChatRomm(data.email, data.room);
   };
   return (
     <div>
